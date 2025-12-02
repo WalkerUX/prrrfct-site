@@ -2,32 +2,198 @@
 @tailwind components;
 @tailwind utilities;
 
+/* LAYER 1: PRIMITIVES */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  /* Brand primaries */
+  --primitive-brand-50: #ff5733;
+  --primitive-brand-60: #cd4224;
+  --primitive-brand-70: #a6351d;
+
+  /* Monochrome scale */
+  --primitive-mono-0: #ffffff;
+  --primitive-mono-5: #fafafa;
+  --primitive-mono-10: #f5f5f5;
+  --primitive-mono-15: #eeeeee;
+  --primitive-mono-20: #e0e0e0;
+  --primitive-mono-30: #cbcdcd;
+  --primitive-mono-40: #8d9496;
+  --primitive-mono-50: #777e80;
+  --primitive-mono-60: #505759;
+  --primitive-mono-70: #383d3e;
+  --primitive-mono-80: #282c2d;
+  --primitive-mono-85: #202324;
+  --primitive-mono-90: #181a1b;
+  --primitive-mono-95: #101112;
+  --primitive-mono-100: #111111;
+
+  /* Feedback primaries */
+  --primitive-success-50: #008035;
+  --primitive-warning-50: #b65116;
+  --primitive-error-50: #b80015;
+  --primitive-info-50: #15498b;
+
+  /* Base font family */
+  --font-family-sans: "Plus Jakarta Sans", system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
+
+  /* Spacing primitives */
+  --space-primitive-2xs: 4px;
+  --space-primitive-xs: 8px;
+  --space-primitive-sm: 12px;
+  --space-primitive-md: 16px;
+  --space-primitive-lg: 20px;
+  --space-primitive-xl: 24px;
+  --space-primitive-2xl: 32px;
+  --space-primitive-3xl: 40px;
+  --space-primitive-4xl: 48px;
+  --space-primitive-5xl: 64px;
+
+  /* Spacing aliases used by Tailwind spacing scale */
+  --space-2xs: var(--space-primitive-2xs);
+  --space-xs: var(--space-primitive-xs);
+  --space-sm: var(--space-primitive-sm);
+  --space-md: var(--space-primitive-md);
+  --space-lg: var(--space-primitive-lg);
+  --space-xl: var(--space-primitive-xl);
+  --space-2xl: var(--space-primitive-2xl);
+  --space-3xl: var(--space-primitive-3xl);
+  --space-4xl: var(--space-primitive-4xl);
+
+  /* Layout defaults (mobile first) */
+  --padding-page: var(--space-primitive-md);
+  --padding-container: var(--space-primitive-md);
+  --margin-section: var(--space-primitive-md);
+
+  --radius-interactive-sm: 8px;
+  --radius-interactive-lg: 28px;
+  --radius-container-md: 16px;
+  --radius-container-lg: 24px;
+
+  --max-width-page: 100%;
+  --max-width-form: 100%;
+
+  /* Color aliases used by Tailwind theme */
+  --color-fill-section-primary: var(--primitive-mono-0);
+  --color-fill-section-secondary: var(--primitive-mono-5);
+  --color-fill-container-primary: var(--primitive-mono-0);
+  --color-fill-container-secondary: var(--primitive-mono-10);
+  --color-fill-container-tertiary: var(--primitive-mono-15);
+
+  --color-text-primary: var(--primitive-mono-95);
+  --color-text-secondary: var(--primitive-mono-40);
+  --color-text-tertiary: var(--primitive-mono-60);
+  --color-text-disabled: var(--primitive-mono-50);
+  --color-text-primary-inverse: var(--primitive-mono-0);
+
+  --color-brand-primary: var(--primitive-brand-50);
+  --color-brand-secondary: var(--primitive-brand-60);
+  --color-feedback-success: var(--primitive-success-50);
+  --color-feedback-warning: var(--primitive-warning-50);
+  --color-feedback-error: var(--primitive-error-50);
+  --color-feedback-info: var(--primitive-info-50);
+
+  /* Typography: mobile / tablet defaults */
+  --font-size-h1: 40px;
+  --line-height-h1: 48px;
+  --letter-spacing-h1: -0.02em;
+
+  --font-size-h2: 32px;
+  --line-height-h2: 40px;
+  --letter-spacing-h2: -0.015em;
+
+  --font-size-h3: 28px;
+  --line-height-h3: 36px;
+  --letter-spacing-h3: -0.01em;
+
+  --font-size-h4: 24px;
+  --line-height-h4: 32px;
+  --letter-spacing-h4: -0.005em;
+
+  --font-size-h5: 20px;
+  --line-height-h5: 28px;
+  --letter-spacing-h5: 0em;
+
+  --font-size-h6: 18px;
+  --line-height-h6: 24px;
+  --letter-spacing-h6: 0em;
+
+  --font-size-body-lg: 18px;
+  --line-height-body-lg: 28px;
+
+  --font-size-body-md: 16px;
+  --line-height-body-md: 24px;
+
+  --font-size-caption-md: 14px;
+  --line-height-caption-md: 20px;
+
+  --font-size-caption-sm: 12px;
+  --line-height-caption-sm: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Base element styles */
+html {
+  font-family: var(--font-family-sans);
+  background-color: var(--color-fill-section-primary);
+  color: var(--color-text-primary);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 0;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Tablet breakpoint (md: 768px) */
+@media (min-width: 768px) {
+  :root {
+    /* Slightly larger page/container padding on tablet */
+    --padding-page: var(--space-primitive-lg);
+    --padding-container: var(--space-primitive-lg);
+    --margin-section: var(--space-primitive-lg);
+
+    --max-width-page: 928px;
+    --max-width-form: 560px;
+  }
+}
+
+/* Desktop breakpoint (lg: 1280px) */
+@media (min-width: 1280px) {
+  :root {
+    /* Desktop typography */
+    --font-size-h1: 64px;
+    --line-height-h1: 72px;
+
+    --font-size-h2: 48px;
+    --line-height-h2: 56px;
+
+    --font-size-h3: 40px;
+    --line-height-h3: 48px;
+
+    --font-size-h4: 32px;
+    --line-height-h4: 40px;
+
+    --font-size-h5: 24px;
+    --line-height-h5: 32px;
+
+    --font-size-h6: 20px;
+    --line-height-h6: 28px;
+
+    --font-size-body-lg: 18px;
+    --line-height-body-lg: 28px;
+
+    --font-size-body-md: 16px;
+    --line-height-body-md: 24px;
+
+    --font-size-caption-md: 14px;
+    --line-height-caption-md: 20px;
+
+    --font-size-caption-sm: 12px;
+    --line-height-caption-sm: 16px;
+
+    /* Desktop layout */
+    --padding-page: var(--space-primitive-4xl);
+    --padding-container: var(--space-primitive-2xl);
+    --margin-section: var(--space-primitive-2xl);
+
+    --max-width-page: 1312px;
+    --max-width-form: 740px;
   }
 }
