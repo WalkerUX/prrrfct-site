@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LAYER 1: PRIMITIVES */
+/* -------------------------------------------------------------------------- */
+/* LAYER 1: PRIMITIVES                                                        */
+/* -------------------------------------------------------------------------- */
+
 :root {
   /* Brand primaries */
   --primitive-brand-50: #ff5733;
@@ -36,7 +39,9 @@
   --font-family-sans: "Plus Jakarta Sans", system-ui, -apple-system,
     BlinkMacSystemFont, sans-serif;
 
-  /* Spacing primitives */
+  /* ---------------------------------------------------------------------- */
+  /* Spacing primitives                                                     */
+  /* ---------------------------------------------------------------------- */
   --space-primitive-2xs: 4px;
   --space-primitive-xs: 8px;
   --space-primitive-sm: 12px;
@@ -72,9 +77,12 @@
   --max-width-page: 100%;
   --max-width-form: 100%;
 
-  /* Color aliases used by Tailwind theme */
+  /* ---------------------------------------------------------------------- */
+  /* Color aliases used by Tailwind theme                                   */
+  /* ---------------------------------------------------------------------- */
   --color-fill-section-primary: var(--primitive-mono-0);
   --color-fill-section-secondary: var(--primitive-mono-5);
+
   --color-fill-container-primary: var(--primitive-mono-0);
   --color-fill-container-secondary: var(--primitive-mono-10);
   --color-fill-container-tertiary: var(--primitive-mono-15);
@@ -87,12 +95,15 @@
 
   --color-brand-primary: var(--primitive-brand-50);
   --color-brand-secondary: var(--primitive-brand-60);
+
   --color-feedback-success: var(--primitive-success-50);
   --color-feedback-warning: var(--primitive-warning-50);
   --color-feedback-error: var(--primitive-error-50);
   --color-feedback-info: var(--primitive-info-50);
 
-  /* Typography: mobile / tablet defaults */
+  /* ---------------------------------------------------------------------- */
+  /* Typography: mobile / tablet defaults                                   */
+  /* ---------------------------------------------------------------------- */
   --font-size-h1: 40px;
   --line-height-h1: 48px;
   --letter-spacing-h1: -0.02em;
@@ -128,9 +139,18 @@
 
   --font-size-caption-sm: 12px;
   --line-height-caption-sm: 16px;
+
+  /* ---------------------------------------------------------------------- */
+  /* NEW — Container border/stroke variables                                */
+  /* ---------------------------------------------------------------------- */
+  --stroke-container-sm: 1px;
+  --color-stroke-container-primary: var(--primitive-mono-30);
 }
 
-/* Base element styles */
+/* -------------------------------------------------------------------------- */
+/* BASE ELEMENT STYLES                                                       */
+/* -------------------------------------------------------------------------- */
+
 html {
   font-family: var(--font-family-sans);
   background-color: var(--color-fill-section-primary);
@@ -141,10 +161,12 @@ body {
   margin: 0;
 }
 
-/* Tablet breakpoint (md: 768px) */
+/* -------------------------------------------------------------------------- */
+/* Tablet breakpoint (md: 768px)                                             */
+/* -------------------------------------------------------------------------- */
+
 @media (min-width: 768px) {
   :root {
-    /* Slightly larger page/container padding on tablet */
     --padding-page: var(--space-primitive-lg);
     --padding-container: var(--space-primitive-lg);
     --margin-section: var(--space-primitive-lg);
@@ -154,7 +176,10 @@ body {
   }
 }
 
-/* Desktop breakpoint (lg: 1280px) */
+/* -------------------------------------------------------------------------- */
+/* Desktop breakpoint (lg: 1280px)                                           */
+/* -------------------------------------------------------------------------- */
+
 @media (min-width: 1280px) {
   :root {
     /* Desktop typography */
