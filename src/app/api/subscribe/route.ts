@@ -1,44 +1,104 @@
+// src/app/api/subscribe/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-  try {
-    const { email } = await request.json();
+const MAILERLITE_ENDPOINT = "https://connect.mailerlite.com/api/subscribers";
 
-    if (!email || typeof email !== "string") {
-      return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json().catch(() => ({}));
+    const email = body?.email?.trim?.();
+
+    if (!email) {
+      return NextResponse.json(
+        {
+          ok: false,
+          step: "validate-input",
+          error: "Email is required",
+          receivedBody: body,
+        },
+        { status: 400 }
+      );
     }
 
     const apiKey = process.env.MAILERLITE_API_KEY;
-    const groupId = process.env.MAILERLITE_GROUP_ID;
 
-    if (!apiKey || !groupId) {
-      console.error("Missing MailerLite env vars");
-      return NextResponse.json({ error: "Server configuration error." }, { status: 500 });
+    // 🔍 Don't expose the real key; just whether it exists
+    const hasKey = Boolean(apiKey && apiKey.length > 10);
+    console.log("[subscribe] MAILERLITE_API_KEY present?", hasKey);
+
+    if (!hasKey) {
+      return NextResponse.json(
+        {
+          ok: false,
+          step: "read-env",
+          error: "MAILERLITE_API_KEY is missing or too short in this environment",
+        },
+        { status: 500 }
+      );
     }
 
-    const response = await fetch("https://connect.mailerlite.com/api/subscribers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        email,
-        groups: [groupId],
-        status: "active",
-      }),
+    const payload = {
+      email,
+      // If you’re using groups, uncomment and add yours:
+      // groups: ["YOUR_GROUP_ID"],
+    };
+
+    console.log("[subscribe] Sending to MailerLite", {
+      endpoint: MAILERLITE_ENDPOINT,
+      email,
     });
 
-    const data = await response.json();
+    const mlResponse = await fetch(MAILERLITE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-    if (!response.ok) {
-      return NextResponse.json({ error: data?.error ?? "Subscription failed." }, { status: 400 });
+    const mlJson = await mlResponse.json().catch(() => ({}));
+
+    console.log("[subscribe] MailerLite status", mlResponse.status);
+
+    if (!mlResponse.ok) {
+      console.error("[subscribe] MailerLite error", {
+        status: mlResponse.status,
+        body: mlJson,
+      });
+
+      return NextResponse.json(
+        {
+          ok: false,
+          step: "mailerLite",
+          status: mlResponse.status,
+          error: "MailerLite request failed",
+          mailerLiteBody: mlJson,
+        },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ message: "You're subscribed to early access!" }, { status: 200 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error." }, { status: 500 });
+    return NextResponse.json(
+      {
+        ok: true,
+        step: "done",
+        status: mlResponse.status,
+        mailerLiteBody: mlJson,
+      },
+      { status: 200 }
+    );
+  } catch (err: any) {
+    console.error("[subscribe] Uncaught error", err);
+
+    return NextResponse.json(
+      {
+        ok: false,
+        step: "catch-block",
+        error: err?.message || "Unexpected server error",
+      },
+      { status: 500 }
+    );
   }
 }
