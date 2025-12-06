@@ -5,48 +5,39 @@ const MAILERLITE_ENDPOINT = "https://connect.mailerlite.com/api/subscribers";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}));
-    const email = body?.email?.trim?.();
+    const { email } = await req.json();
 
-    if (!email) {
+    const trimmedEmail =
+      typeof email === "string" ? email.trim() : "";
+
+    if (!trimmedEmail) {
       return NextResponse.json(
-        {
-          ok: false,
-          step: "validate-input",
-          error: "Email is required",
-          receivedBody: body,
-        },
+        { ok: false, message: "Email is required." },
         { status: 400 }
       );
     }
 
     const apiKey = process.env.MAILERLITE_API_KEY;
 
-    // 🔍 Don't expose the real key; just whether it exists
-    const hasKey = Boolean(apiKey && apiKey.length > 10);
-    console.log("[subscribe] MAILERLITE_API_KEY present?", hasKey);
-
-    if (!hasKey) {
+    if (!apiKey || apiKey.length < 10) {
+      // Don’t expose env details to the user
+      console.error(
+        "[subscribe] MAILERLITE_API_KEY missing or invalid in this environment"
+      );
       return NextResponse.json(
         {
           ok: false,
-          step: "read-env",
-          error: "MAILERLITE_API_KEY is missing or too short in this environment",
+          message: "Subscription is temporarily unavailable. Please try again later.",
         },
         { status: 500 }
       );
     }
 
     const payload = {
-      email,
-      // If you’re using groups, uncomment and add yours:
+      email: trimmedEmail,
+      // If you want groups, uncomment and add your ID(s):
       // groups: ["YOUR_GROUP_ID"],
     };
-
-    console.log("[subscribe] Sending to MailerLite", {
-      endpoint: MAILERLITE_ENDPOINT,
-      email,
-    });
 
     const mlResponse = await fetch(MAILERLITE_ENDPOINT, {
       method: "POST",
@@ -58,9 +49,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(payload),
     });
 
-    const mlJson = await mlResponse.json().catch(() => ({}));
-
-    console.log("[subscribe] MailerLite status", mlResponse.status);
+    const mlJson = await mlResponse.json().catch(() => null);
 
     if (!mlResponse.ok) {
       console.error("[subscribe] MailerLite error", {
@@ -71,21 +60,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           ok: false,
-          step: "mailerLite",
-          status: mlResponse.status,
-          error: "MailerLite request failed",
-          mailerLiteBody: mlJson,
+          message: "We couldn’t complete your subscription. Please try again.",
         },
         { status: 500 }
       );
     }
 
+    // Optionally log for debugging
+    console.log("[subscribe] MailerLite success", {
+      status: mlResponse.status,
+      email: trimmedEmail,
+    });
+
     return NextResponse.json(
       {
         ok: true,
-        step: "done",
-        status: mlResponse.status,
-        mailerLiteBody: mlJson,
+        message: "Thanks for signing up! You’re on the list.",
       },
       { status: 200 }
     );
@@ -95,8 +85,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         ok: false,
-        step: "catch-block",
-        error: err?.message || "Unexpected server error",
+        message: "Something went wrong. Please try again.",
       },
       { status: 500 }
     );
