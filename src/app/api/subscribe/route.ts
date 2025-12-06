@@ -3,15 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 const MAILERLITE_ENDPOINT = "https://connect.mailerlite.com/api/subscribers";
 
-// Very simple email format check
+// Simple email format check
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    // Be defensive: if body isn't valid JSON, fall back to {}
+    const body = await req.json().catch(() => ({} as any));
 
+    const rawEmail = body?.email;
     const trimmedEmail =
-      typeof email === "string" ? email.trim() : "";
+      typeof rawEmail === "string" ? rawEmail.trim() : "";
 
     // 1) Missing email
     if (!trimmedEmail) {
@@ -51,8 +53,7 @@ export async function POST(req: NextRequest) {
 
     const payload = {
       email: trimmedEmail,
-      // If you want groups, uncomment and add your ID(s):
-      // groups: ["YOUR_GROUP_ID"],
+      // groups: ["YOUR_GROUP_ID"], // optional
     };
 
     const mlResponse = await fetch(MAILERLITE_ENDPOINT, {
@@ -65,7 +66,12 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(payload),
     });
 
-    const mlJson = await mlResponse.json().catch(() => null);
+    let mlJson: any = null;
+    try {
+      mlJson = await mlResponse.json();
+    } catch {
+      mlJson = null;
+    }
 
     if (!mlResponse.ok) {
       console.error("[subscribe] MailerLite error", {
