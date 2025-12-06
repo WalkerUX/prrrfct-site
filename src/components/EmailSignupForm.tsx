@@ -7,6 +7,12 @@ import { Button } from "@/components/ui/Button";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+type SubscribeResponse = {
+  ok?: boolean;
+  message?: string;
+  error?: string;
+};
+
 export function EmailSignupForm() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -36,12 +42,17 @@ export function EmailSignupForm() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data: SubscribeResponse = await response
+        .json()
+        .catch(() => ({} as SubscribeResponse));
 
-      if (!response.ok) {
+      // Treat any non-2xx OR explicit ok:false as an error
+      if (!response.ok || data?.ok === false) {
         setStatus("error");
         setMessage(
-          data?.error ||
+          // 🔑 Prefer the server's human-friendly message
+          data?.message ||
+            data?.error ||
             "We couldn’t add your email right now. Please try again."
         );
         return;
