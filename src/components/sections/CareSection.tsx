@@ -35,11 +35,11 @@ export const CareSection = () => {
       */}
       <div className="flex flex-col gap-xs lg:gap-md mt-md">
          <Text variant="body-lg" className="font-bold">
-           Prrrfct is free, with optional premium features from $0.99
+           Free to care and fun to customize
          </Text>
          <CareItem 
             title="Play with them:" 
-            description="Add premium toys, treats, outfits and more to match your Cat’s personality."
+            description="Add premium toys, treats, outfits and more to match your Cat’s personality. From $0.99."
             imageSrc="/images/icon-play.png" 
           />
       </div>

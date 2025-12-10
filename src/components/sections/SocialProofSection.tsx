@@ -1,13 +1,12 @@
-import React from 'react';
-import { SocialCard } from '@/components/ui/SocialCard';
+"use client";
 
-export const SocialProofSection = () => {
+import React from "react";
+import { SocialCard } from "@/components/ui/SocialCard";
+
+export function SocialProofSection() {
   return (
-    // WRAPPER:
-    // - Mobile: Center
-    // - Desktop: Right (End) to match the video's right edge
-    <div className="w-full flex justify-center lg:justify-end">
+    <section className="w-full flex flex-col items-start">
       <SocialCard />
-    </div>
+    </section>
   );
-};
+}

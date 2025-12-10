@@ -1,9 +1,10 @@
-import React from 'react';
-import { HeroSection } from '@/components/sections/HeroSection';
-import { CareSection } from '@/components/sections/CareSection';
-import { EarlyAccessSection } from '@/components/sections/EarlyAccessSection';
-import { SocialProofSection } from '@/components/sections/SocialProofSection';
-import { HeroVideoSection } from '@/components/sections/HeroVideoSection';
+import React from "react";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { CareSection } from "@/components/sections/CareSection";
+import { EarlyAccessSection } from "@/components/sections/EarlyAccessSection";
+import { SocialProofSection } from "@/components/sections/SocialProofSection";
+import { HeroVideoSection } from "@/components/sections/HeroVideoSection";
+import { GallerySection } from "@/components/sections/GallerySection";
 
 export default function Home() {
   return (
@@ -22,22 +23,26 @@ export default function Home() {
           </div>
 
           <CareSection />
-
-          {/* Social Proof: stacked under Care on mobile */}
-          <div className="lg:hidden pt-md">
-            <SocialProofSection />
-          </div>
         </div>
 
         {/* --- RIGHT COLUMN (Desktop Only) --- */}
-        <div className="hidden lg:flex lg:col-span-7 flex-col gap-xl lg:sticky lg:top-xl">
+        <div className="hidden lg:flex lg:col-span-7 flex-col gap-xl">
           {/* Desktop Video */}
           <HeroVideoSection variant="desktop" />
 
-          {/* Email Card (Aligns Left/Start) */}
+          {/* Email Card */}
           <EarlyAccessSection />
+        </div>
 
-          {/* Social Proof (Aligns Right/End via component logic) */}
+        {/* --- GALLERY: spans full width on desktop --- */}
+        {/* tighten top spacing from mt-3xl → mt-2xl */}
+        <div className="mt-2xl lg:col-span-12">
+          <GallerySection />
+        </div>
+
+        {/* --- SOCIAL PROOF: below gallery at all breakpoints --- */}
+        {/* tighten spacing from mt-xl → mt-2xl for consistency */}
+        <div className="mt-2xl lg:col-span-12">
           <SocialProofSection />
         </div>
       </section>
