@@ -34,16 +34,16 @@ export const HeroVideoSection: React.FC<HeroVideoSectionProps> = ({
     return () => mqAny.removeListener?.(update);
   }, []);
 
+  const CACHE_BUST = "2025-12-14";
+
   const config = {
     mobile: {
-      // INTENTIONALLY BROKEN PATH — forces poster fallback
-      video: "/video/hero-video-mobile-v2_DOES_NOT_EXIST.mp4",
+      video: `/video/hero-video-mobile-v2.mp4?v=${CACHE_BUST}`,
       poster: "/images/hero-poster-mobile-v2.jpg",
       aspect: "aspect-[4/3]",
     },
     desktop: {
-      // INTENTIONALLY BROKEN PATH — forces poster fallback
-      video: "/video/hero-video-desktop_DOES_NOT_EXIST.mp4",
+      video: `/video/hero-video-desktop.mp4?v=${CACHE_BUST}`,
       poster: "/images/hero-poster-desktop.jpg",
       aspect: "aspect-square",
     },
@@ -52,6 +52,7 @@ export const HeroVideoSection: React.FC<HeroVideoSectionProps> = ({
   const { video, poster, aspect } = config[variant];
 
   const videoBehavior = useMemo(() => {
+    // Reduced motion: no autoplay; user opts in
     if (reduceMotion) {
       return {
         autoPlay: false,
@@ -59,7 +60,7 @@ export const HeroVideoSection: React.FC<HeroVideoSectionProps> = ({
       };
     }
 
-    // Autoplay allowed, but video will fail → poster remains
+    // Default: autoplay muted, play once, no loop
     return {
       autoPlay: true,
       controls: false,
@@ -81,7 +82,6 @@ export const HeroVideoSection: React.FC<HeroVideoSectionProps> = ({
         {...videoBehavior}
       >
         <source src={video} type="video/mp4" />
-        {/* Fallback content if <video> fails */}
         <img src={poster} alt="" className="w-full h-full object-cover" />
       </video>
     </div>
