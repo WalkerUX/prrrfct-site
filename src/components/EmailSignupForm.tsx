@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Text } from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
@@ -14,6 +14,9 @@ type SubscribeResponse = {
 };
 
 export function EmailSignupForm() {
+  const inputId = useId();
+  const messageId = useId();
+
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string | null>(null);
@@ -24,9 +27,11 @@ export function EmailSignupForm() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!email) {
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
       setStatus("error");
-      setMessage("Please enter your email address.");
+      setMessage("Please enter a valid email address (for example, name@example.com).");
       return;
     }
 
@@ -36,21 +41,17 @@ export function EmailSignupForm() {
     try {
       const response = await fetch("/api/subscribe", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail }),
       });
 
       const data: SubscribeResponse = await response
         .json()
         .catch(() => ({} as SubscribeResponse));
 
-      // Treat any non-2xx OR explicit ok:false as an error
       if (!response.ok || data?.ok === false) {
         setStatus("error");
         setMessage(
-          // 🔑 Prefer the server's human-friendly message
           data?.message ||
             data?.error ||
             "We couldn’t add your email right now. Please try again."
@@ -77,53 +78,51 @@ export function EmailSignupForm() {
       onSubmit={handleSubmit}
       aria-label="Sign up for Prrrfct early access"
       noValidate
-      className="w-full space-y-xs" // DS spacing token
+      className="w-full space-y-xs"
     >
-      {/* Email + button row */}
       <div className="flex flex-col gap-xs md:flex-row md:items-center">
-        {/* Email field */}
-        <div className="flex-1">
-          <label htmlFor="email" className="sr-only">
+        <div className="flex-1 w-full">
+          <label htmlFor={inputId} className="sr-only">
             Email address
           </label>
+
           <Input
-            id="email"
+            id={inputId}
             name="email"
             type="email"
+            inputMode="email"
+            enterKeyHint="done"
             autoComplete="email"
             required
             placeholder="Enter email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            aria-invalid={isError ? "true" : "false"}
-            aria-describedby="email-signup-message"
+            aria-invalid={isError}
+            aria-describedby={message ? messageId : undefined}
+            disabled={isLoading}
+            error={isError ? " " : undefined} // triggers border-error without showing extra text
           />
         </div>
 
-        {/* Primary CTA */}
-        <div className="mt-xs md:mt-0 md:ml-xs">
+        <div className="w-full md:w-auto">
           <Button
             type="submit"
-            variant="primary" // Prrrfct DS primary style
+            variant="primary"
             disabled={isLoading}
+            className="w-full md:w-auto"
           >
             {isLoading ? "Joining…" : "Join now"}
           </Button>
         </div>
       </div>
 
-      {/* A11y live region for success/error */}
       <div
-        id="email-signup-message"
-        aria-live="polite"
-        className="min-h-[1.25rem]"
+        id={messageId}
+        aria-live={isError ? "assertive" : "polite"}
+        role={isError ? "alert" : "status"}
       >
         {message && (
-          <Text
-            as="p"
-            variant="body-md"
-            className={isError ? "text-status-error" : "text-status-success"}
-          >
+          <Text as="p" variant="body-md" color={isError ? "error" : "success"}>
             {message}
           </Text>
         )}

@@ -15,17 +15,22 @@ export function HeroSection() {
       </Text>
 
       <Text as="p" variant="body-lg" className="text-tertiary">
-      Create your own unique companion—designed by you, brought to life for your daily moment of calm, and ready to bring  some fun to your day. Take a quick break to care for your Cat every day.
+        Create your own unique companion—designed by you, brought to life for your
+        daily moment of calm, and ready to bring some fun to your day. Take a quick
+        break to care for your Cat every day.
       </Text>
 
       <div>
-        <Button
-          variant="secondary"
-          fullWidth
-          aria-label="Watch demo"
+        <a
+          href="/downloads/HowPrrrfctWorks.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="See how it works, opens a PDF in a new tab"
         >
-          Watch demo
-        </Button>
+          <Button variant="secondary" fullWidth>
+            See how it works
+          </Button>
+        </a>
       </div>
     </div>
   );
