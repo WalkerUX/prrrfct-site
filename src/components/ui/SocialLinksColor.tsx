@@ -27,12 +27,29 @@ export const SocialLinksColor = () => {
     youtube: "YouTube",
   };
 
+  // ✅ Real profile URLs
+  const HREFS: Record<SocialPlatform, string> = {
+    facebook: "https://www.facebook.com/prrrfct",
+    instagram:
+      "https://www.instagram.com/gingerbread.prrrfct?igsh=ZThudmkwcXNjYXk2&utm_source=qr",
+    tiktok: "https://www.tiktok.com/@gingerbread.prrrft?_r=1&_t=ZT-92NywUFjkCc",
+    x: "#x",
+    reddit: "#reddit",
+    youtube: "#youtube",
+  };
+
+  const VISIBLE_PLATFORMS: SocialPlatform[] = [
+    "instagram",
+    "tiktok",
+    "facebook",
+  ];
+
   return (
     <div className="flex items-center gap-xs">
-      {(Object.keys(ICONS) as SocialPlatform[]).map((platform) => (
+      {VISIBLE_PLATFORMS.map((platform) => (
         <a
           key={platform}
-          href={`#${platform}`}
+          href={HREFS[platform]}
           target="_blank"
           rel="noopener noreferrer"
           className="
