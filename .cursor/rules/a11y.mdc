@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+All UI must meet WCAG 2.2 AA: semantic HTML, keyboard access, focus management, and accessible modals by default.

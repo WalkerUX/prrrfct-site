@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+Do not use default Tailwind utilities for spacing, sizing, or color
+(e.g. p-4, m-2, gap-4, text-gray-500, bg-slate-100).
+
+Only use design tokens explicitly defined in tailwind.config.ts.
+Do not invent new tokens or utility classes.

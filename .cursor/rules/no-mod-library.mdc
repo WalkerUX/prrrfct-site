@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+Do not modify files in lib/** or components/ui/** unless explicitly instructed.
