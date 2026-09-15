@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prrrfct Design System — 2025</title>
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+
+    :root {
+      --primitive-brand-50: #FF5733; --primitive-brand-60: #CD4224; --primitive-brand-70: #A6351D;
+      --primitive-mono-0: #FFFFFF; --primitive-mono-5: #FAFAFA; --primitive-mono-10: #F5F5F5;
+      --primitive-mono-15: #EEEEEE; --primitive-mono-20: #E0E0E0; --primitive-mono-30: #CBCDCD;
+      --primitive-mono-40: #8D9496; --primitive-mono-50: #777E80; --primitive-mono-60: #505759;
+      --primitive-mono-70: #383D3E; --primitive-mono-80: #282C2D; --primitive-mono-85: #202324;
+      --primitive-mono-90: #181A1B; --primitive-mono-95: #101112; --primitive-mono-100: #111111;
+      --primitive-success-50: #008035; --primitive-warning-50: #B65116;
+      --primitive-error-50: #B80015; --primitive-info-50: #15498B;
+      --brand-primary: var(--primitive-brand-50); --brand-secondary: var(--primitive-brand-60);
+      --text-primary: var(--primitive-mono-95); --text-secondary: var(--primitive-mono-40);
+      --text-tertiary: var(--primitive-mono-60); --text-disabled: var(--primitive-mono-50);
+      --text-inverse: var(--primitive-mono-0); --section-primary: var(--primitive-mono-0);
+      --section-secondary: var(--primitive-mono-5); --container-primary: var(--primitive-mono-0);
+      --container-secondary: var(--primitive-mono-10); --container-tertiary: var(--primitive-mono-15);
+      --stroke-container: var(--primitive-mono-30); --success: var(--primitive-success-50);
+      --warning: var(--primitive-warning-50); --error: var(--primitive-error-50);
+      --info: var(--primitive-info-50); --ink: var(--primitive-mono-100);
+      --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 20px;
+      --space-xl: 24px; --space-2xl: 32px; --space-3xl: 40px; --space-4xl: 48px; --space-5xl: 64px;
+      --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-button: 28px;
+      --radius-full: 9999px; --page-max: 1120px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      font-weight: 400; font-size: 16px; line-height: 24px;
+      color: var(--text-primary); background: var(--section-secondary);
+    }
+    img { max-width: 100%; display: block; }
+    button, input { font-family: inherit; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; line-height: 16px; }
+    .t-h1 { font-size: 40px; line-height: 48px; letter-spacing: -0.02em; font-weight: 700; }
+    .t-h2 { font-size: 32px; line-height: 40px; letter-spacing: -0.015em; font-weight: 700; }
+    .t-h3 { font-size: 28px; line-height: 36px; font-weight: 700; }
+    .t-h4 { font-size: 24px; line-height: 32px; font-weight: 600; }
+    .t-h5 { font-size: 20px; line-height: 28px; font-weight: 600; }
+    .t-h6 { font-size: 18px; line-height: 24px; font-weight: 600; }
+    .t-body-lg { font-size: 18px; line-height: 28px; }
+    .t-body-md { font-size: 16px; line-height: 24px; }
+    .t-caption-md { font-size: 14px; line-height: 20px; }
+    .t-caption-sm { font-size: 12px; line-height: 16px; }
+    @media (min-width: 1280px) {
+      .t-h1 { font-size: 64px; line-height: 72px; }
+      .t-h2 { font-size: 48px; line-height: 56px; }
+      .t-h3 { font-size: 40px; line-height: 48px; }
+      .t-h4 { font-size: 32px; line-height: 40px; }
+      .t-h5 { font-size: 24px; line-height: 32px; }
+      .t-h6 { font-size: 20px; line-height: 28px; }
+    }
+
+    .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--stroke-container); }
+    .nav-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 56px; }
+    .nav-logo { height: 22px; width: auto; }
+    .nav-links { display: none; gap: 2px; list-style: none; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a { font-size: 11px; line-height: 14px; font-weight: 600; color: var(--text-tertiary); text-decoration: none; padding: 6px 8px; border-radius: var(--radius-full); }
+    .nav-links a:hover { color: var(--brand-primary); background: #FFF4F1; }
+    @media (min-width: 900px) { .nav-links { display: flex; } }
+    .sheet { background: var(--section-primary); }
+    .sheet-inner { max-width: var(--page-max); margin: 0 auto; padding: 64px 24px 80px; }
+    @media (min-width: 768px) { .sheet-inner { padding: 80px 48px 96px; } }
+    @media (min-width: 1280px) { .sheet-inner { padding: 96px 64px 112px; } }
+    .section-kicker { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .section-num { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em; color: var(--brand-primary); text-transform: uppercase; }
+    .section-rule { width: 32px; height: 2px; background: var(--primitive-brand-50); border-radius: 2px; }
+    .section-title { margin-bottom: 12px; }
+    .section-lede { color: var(--text-tertiary); max-width: 680px; margin-bottom: 48px; }
+    .page-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 64px; padding-top: 24px; border-top: 1px solid #EEEEEE; color: var(--text-secondary); font-size: 12px; line-height: 16px; }
+    .subhead { font-size: 20px; line-height: 28px; font-weight: 700; margin: 32px 0 16px; }
+    .cover { min-height: 100vh; display: grid; grid-template-rows: 1fr auto; background: #fff; }
+    @media (min-width: 768px) { .cover { grid-template-rows: none; grid-template-columns: 1.05fr 0.95fr; } }
+    .cover-copy { display: flex; flex-direction: column; justify-content: space-between; padding: 48px 32px 40px; }
+    @media (min-width: 768px) { .cover-copy { padding: 64px 56px 48px 64px; } }
+    @media (min-width: 1280px) { .cover-copy { padding: 80px 72px 56px 80px; } }
+    .cover-logo { height: 48px; width: auto; }
+    @media (min-width: 1280px) { .cover-logo { height: 64px; } }
+    .cover-mid { margin: 48px 0; }
+    .cover-eyebrow { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand-primary); margin-bottom: 16px; }
+    .cover-title { font-weight: 700; letter-spacing: -0.02em; font-size: 40px; line-height: 48px; color: var(--ink); margin-bottom: 24px; }
+    @media (min-width: 1280px) { .cover-title { font-size: 64px; line-height: 72px; } }
+    .cover-tag { font-size: 18px; line-height: 28px; color: var(--text-tertiary); max-width: 440px; }
+    .cover-meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+    .cover-year { font-size: 20px; line-height: 28px; font-weight: 700; color: var(--ink); }
+    .cover-meta small { display: block; font-size: 12px; line-height: 16px; color: var(--text-secondary); margin-top: 4px; }
+    .cover-visual { position: relative; min-height: 320px; overflow: hidden; background: #6a6e73; }
+    @media (min-width: 768px) { .cover-visual { min-height: 100%; } }
+    .cover-visual img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; position: absolute; inset: 0; }
+    .cover-visual::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--primitive-brand-50); }
+    .cover-contents { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; max-width: 420px; }
+    .cover-contents a { font-size: 12px; line-height: 16px; color: var(--text-tertiary); text-decoration: none; font-weight: 500; }
+    .cover-contents a span { color: var(--brand-primary); font-weight: 700; margin-right: 8px; }
+
+    .quote-block { background: var(--section-secondary); border-radius: var(--radius-lg); padding: 32px 28px; margin-bottom: 40px; }
+    @media (min-width: 768px) { .quote-block { padding: 40px 48px; } }
+    .quote-block p { font-size: 22px; line-height: 30px; font-weight: 600; letter-spacing: -0.01em; max-width: 800px; }
+    @media (min-width: 1280px) { .quote-block p { font-size: 28px; line-height: 36px; } }
+    .quote-block cite { display: block; margin-top: 16px; font-style: normal; font-size: 14px; line-height: 20px; color: var(--text-secondary); font-weight: 500; }
+    .trait-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+    @media (min-width: 768px) { .trait-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
+    .trait { background: #fff; border: 1px solid var(--stroke-container); border-radius: var(--radius-md); padding: 24px; }
+    .trait-label { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-primary); margin-bottom: 8px; }
+    .trait h3 { font-size: 20px; line-height: 28px; font-weight: 700; margin-bottom: 8px; }
+    .trait p { color: var(--text-tertiary); font-size: 16px; line-height: 24px; }
+    .callout { border-left: 3px solid var(--brand-primary); background: #FFF4F1; border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 16px 20px; margin: 24px 0 40px; font-size: 14px; line-height: 20px; color: var(--text-tertiary); }
+    .callout strong { color: var(--text-primary); }
+    .swatch-hero { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 32px; }
+    @media (min-width: 768px) { .swatch-hero { grid-template-columns: 2fr 1fr 1fr; gap: 16px; } }
+    .swatch { border-radius: var(--radius-md); overflow: hidden; min-height: 140px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px 20px; color: #fff; }
+    .swatch .hex { font-size: 18px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .swatch .token { font-size: 12px; line-height: 16px; opacity: 0.9; margin-top: 4px; }
+    .swatch.tall { min-height: 200px; }
+    .mono-bar { display: flex; height: 64px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 16px; border: 1px solid var(--stroke-container); }
+    .mono-bar span { flex: 1; }
+    .chip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    @media (min-width: 768px) { .chip-grid { grid-template-columns: repeat(5, 1fr); gap: 12px; } }
+    .chip { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--stroke-container); background: #fff; }
+    .chip-color { height: 72px; }
+    .chip-meta { padding: 10px 12px 12px; }
+    .chip-meta .hex { font-size: 12px; line-height: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .chip-meta .token { font-size: 11px; line-height: 14px; color: var(--text-secondary); margin-top: 2px; word-break: break-word; }
+    .semantic-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 768px) { .semantic-grid { grid-template-columns: 1fr 1fr; } }
+    .sem-group h4 { font-size: 14px; line-height: 20px; font-weight: 700; margin-bottom: 12px; }
+    .sem-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #EEEEEE; }
+    .sem-row:last-child { border-bottom: none; }
+    .sem-dot { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--stroke-container); }
+    .sem-row .name { font-size: 13px; line-height: 18px; font-weight: 600; flex: 1; }
+    .sem-row .hex { font-size: 11px; line-height: 14px; font-weight: 500; color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .feedback-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+    @media (min-width: 768px) { .feedback-row { grid-template-columns: repeat(4, 1fr); } }
+    .usage-note { margin-top: 32px; padding: 20px 24px; background: var(--section-secondary); border-radius: var(--radius-md); font-size: 14px; line-height: 20px; color: var(--text-tertiary); }
+    .usage-note strong { color: var(--text-primary); }
+
+    .type-intro { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid #EEEEEE; }
+    @media (min-width: 768px) { .type-intro { grid-template-columns: 1.4fr 1fr; align-items: end; } }
+    .type-meta dl { display: grid; grid-template-columns: 110px 1fr; gap: 8px 12px; }
+    .type-meta dt { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-secondary); }
+    .type-meta dd { font-size: 14px; line-height: 20px; font-weight: 600; }
+    .specimen { padding: 24px 0; border-bottom: 1px solid #EEEEEE; }
+    .specimen:last-of-type { border-bottom: none; }
+    .specimen-label { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 12px; align-items: baseline; }
+    .specimen-label .lvl { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand-primary); min-width: 100px; }
+    .specimen-label .spec { font-size: 12px; line-height: 16px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .spec-pair { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .spec-pair { grid-template-columns: 1fr 1fr; gap: 32px; } }
+    .spec-col .device { font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+    .spec-m-h1 { font-size: 40px; line-height: 48px; letter-spacing: -0.02em; font-weight: 700; }
+    .spec-m-h2 { font-size: 32px; line-height: 40px; letter-spacing: -0.015em; font-weight: 700; }
+    .spec-m-h3 { font-size: 28px; line-height: 36px; letter-spacing: -0.01em; font-weight: 700; }
+    .spec-m-h4 { font-size: 24px; line-height: 32px; letter-spacing: -0.005em; font-weight: 700; }
+    .spec-m-h5 { font-size: 20px; line-height: 28px; font-weight: 600; }
+    .spec-m-h6 { font-size: 18px; line-height: 24px; font-weight: 600; }
+    .spec-d-h1 { font-size: 64px; line-height: 72px; letter-spacing: -0.02em; font-weight: 700; }
+    .spec-d-h2 { font-size: 48px; line-height: 56px; letter-spacing: -0.015em; font-weight: 700; }
+    .spec-d-h3 { font-size: 40px; line-height: 48px; letter-spacing: -0.01em; font-weight: 700; }
+    .spec-d-h4 { font-size: 32px; line-height: 40px; letter-spacing: -0.005em; font-weight: 700; }
+    .spec-d-h5 { font-size: 24px; line-height: 32px; font-weight: 600; }
+    .spec-d-h6 { font-size: 20px; line-height: 28px; font-weight: 600; }
+    .spec-body-lg { font-size: 18px; line-height: 28px; }
+    .spec-body-md { font-size: 16px; line-height: 24px; }
+    .spec-cap-md { font-size: 14px; line-height: 20px; }
+    .spec-cap-sm { font-size: 12px; line-height: 16px; }
+    .spec-sample.muted { color: var(--text-tertiary); }
+    .space-list { display: flex; flex-direction: column; gap: 12px; }
+    .space-row { display: grid; grid-template-columns: 64px 80px 1fr; align-items: center; gap: 16px; }
+    .space-row .val { font-size: 14px; line-height: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .space-row .token { font-size: 12px; line-height: 16px; color: var(--text-secondary); }
+    .space-bar { background: var(--primitive-brand-50); border-radius: 2px; height: 16px; }
+    .radius-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 8px; }
+    @media (min-width: 768px) { .radius-row { grid-template-columns: repeat(5, 1fr); } }
+    .radius-sample { aspect-ratio: 1; background: var(--section-secondary); border: 2px solid var(--primitive-brand-50); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; }
+    .radius-sample .px { font-size: 16px; line-height: 24px; font-weight: 700; }
+    .radius-sample .lbl { font-size: 11px; line-height: 14px; color: var(--text-secondary); margin-top: 4px; }
+    .two-col { display: grid; grid-template-columns: 1fr; gap: 48px; }
+    @media (min-width: 768px) { .two-col { grid-template-columns: 1.15fr 1fr; gap: 64px; } }
+    .bp-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .bp-chip { background: var(--container-secondary); border-radius: var(--radius-full); padding: 8px 16px; font-size: 14px; line-height: 20px; font-weight: 600; }
+    .bp-chip span { color: var(--text-secondary); font-weight: 400; margin-left: 8px; }
+    .layout-table, .token-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; line-height: 20px; }
+    .layout-table th, .layout-table td, .token-table th, .token-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #EEEEEE; vertical-align: top; }
+    .layout-table th, .token-table th { font-size: 11px; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--section-secondary); }
+    .layout-table td.mono { color: var(--text-tertiary); }
+    .token-table { font-size: 13px; line-height: 18px; margin-bottom: 32px; }
+    .token-table code { background: var(--container-secondary); padding: 2px 6px; border-radius: 4px; color: var(--text-primary); word-break: break-all; }
+    .token-dot { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--stroke-container); vertical-align: middle; margin-right: 8px; }
+
+    .comp-card { border: 1px solid var(--stroke-container); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 28px; background: #fff; break-inside: avoid; }
+    .comp-head { padding: 20px 24px 16px; border-bottom: 1px solid #EEEEEE; }
+    .comp-head h3 { font-size: 20px; line-height: 28px; font-weight: 700; margin-bottom: 6px; }
+    .comp-head p { font-size: 14px; line-height: 20px; color: var(--text-tertiary); }
+    .comp-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .tag { font-size: 11px; line-height: 14px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-full); background: var(--container-secondary); color: var(--text-tertiary); }
+    .tag.brand { background: #FFF4F1; color: var(--brand-secondary); }
+    .comp-stage { padding: 28px 24px; background: var(--section-secondary); display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .comp-stage.dark { background: var(--primitive-mono-95); }
+    .comp-stage.col { flex-direction: column; align-items: stretch; }
+    .comp-stage.center { justify-content: center; }
+    .comp-docs { padding: 20px 24px 24px; display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 768px) { .comp-docs { grid-template-columns: 1fr 1fr; } }
+    .comp-docs h4 { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand-primary); margin-bottom: 8px; }
+    .comp-docs ul { list-style: none; }
+    .comp-docs li { font-size: 14px; line-height: 20px; color: var(--text-tertiary); padding: 4px 0 4px 14px; position: relative; }
+    .comp-docs li::before { content: "·"; position: absolute; left: 0; color: var(--brand-primary); font-weight: 700; }
+    .comp-docs .token-list code { display: inline-block; background: var(--container-secondary); padding: 2px 6px; border-radius: 4px; margin: 2px 4px 2px 0; font-size: 11px; }
+    .a11y-note { grid-column: 1 / -1; background: #F3FAF5; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; line-height: 18px; color: var(--text-tertiary); }
+    .a11y-note strong { color: var(--success); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; font-size: 16px; line-height: 24px; font-weight: 700; border-radius: var(--radius-full); padding: 8px 12px; border: 1.5px solid transparent; cursor: default; text-decoration: none; gap: 8px; }
+    .btn-primary, .btn-brand-primary { background: var(--brand-primary); color: var(--text-inverse); }
+    .btn-secondary { background: var(--section-primary); color: var(--text-primary); border-color: var(--brand-primary); }
+    .btn-tertiary { background: transparent; color: var(--brand-primary); }
+    .btn-quaternary { background: transparent; color: var(--text-secondary); }
+    .btn-inverse { background: var(--text-inverse); color: var(--text-primary); }
+    .btn-focus { box-shadow: 0 0 0 2px var(--section-primary), 0 0 0 4px var(--brand-primary); }
+    .state-label { font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+    .btn-grid { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
+    @media (min-width: 768px) { .btn-grid { grid-template-columns: repeat(3, 1fr); } }
+    .btn-cell { background: #fff; border-radius: var(--radius-md); padding: 16px; border: 1px solid #EEEEEE; }
+    .btn-cell.dark-bg { background: var(--primitive-mono-95); border-color: var(--primitive-mono-80); }
+    .btn-cell.dark-bg .state-label { color: var(--primitive-mono-40); }
+    .field { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 360px; }
+    .field label { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-secondary); }
+    .field input, .fake-input { font-size: 16px; line-height: 24px; padding: 12px; border: 1px solid var(--text-disabled); border-radius: var(--radius-sm); background: var(--container-primary); color: var(--text-primary); outline: none; width: 100%; }
+    .field input::placeholder { color: var(--text-disabled); }
+    .field input:focus, .fake-input.focus { border-color: transparent; box-shadow: 0 0 0 2px var(--brand-primary); }
+    .field.error input { border-color: var(--error); }
+    .field .err { font-size: 12px; line-height: 16px; color: var(--error); }
+    .card-demo { background: var(--container-primary); border-radius: var(--radius-lg); padding: 24px; box-shadow: 0 1px 2px rgba(16,17,18,0.06); max-width: 320px; }
+    .card-demo h4 { font-size: 18px; line-height: 24px; font-weight: 700; margin-bottom: 8px; }
+    .card-demo p { font-size: 14px; line-height: 20px; color: var(--text-tertiary); }
+
+    .link-demo { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; line-height: 24px; color: var(--text-primary); text-decoration: none; padding: 24px 0; }
+    .link-demo.hover { color: var(--brand-secondary); font-weight: 600; text-decoration: underline; }
+    .link-demo.selected { color: var(--brand-primary); font-weight: 600; text-decoration: underline; }
+    .link-demo.disabled { color: var(--text-disabled); cursor: not-allowed; }
+    .footer-link-demo { display: inline-flex; align-items: center; padding: 4px; border-radius: var(--radius-sm); border: 3px solid transparent; font-size: 14px; line-height: 20px; color: var(--text-tertiary); text-decoration: underline; }
+    .footer-link-demo.focus { border-color: var(--text-primary); color: var(--text-primary); }
+    .care-item { display: flex; align-items: flex-start; gap: 12px; max-width: 480px; background: #fff; padding: 16px; border-radius: var(--radius-md); }
+    .care-avatar { flex-shrink: 0; width: 60px; height: 60px; border-radius: 9999px; background: var(--container-secondary); border: 1px solid #CBCDCD; overflow: hidden; }
+    .care-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .care-text { display: flex; align-items: center; min-height: 60px; font-size: 16px; line-height: 24px; }
+    .email-card { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; text-align: center; background: var(--section-primary); border-radius: var(--radius-lg); border: 1px solid var(--stroke-container); padding: 24px 32px; box-shadow: 0 1px 2px rgba(16,17,18,0.06); }
+    .email-card h3 { font-size: 28px; line-height: 36px; font-weight: 700; margin-bottom: 20px; }
+    .email-row { display: flex; gap: 8px; width: 100%; margin-bottom: 20px; flex-wrap: wrap; }
+    .email-row input { flex: 1; min-width: 160px; padding: 12px; border: 1px solid var(--text-disabled); border-radius: var(--radius-sm); font-size: 16px; }
+    .social-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-full); background: var(--section-primary); max-width: 363px; border: 1px solid var(--stroke-container); }
+    .social-avatar { width: 84px; height: 84px; border-radius: 9999px; object-fit: cover; border: 1px solid var(--container-tertiary); background: var(--container-secondary); }
+    .social-icons { display: flex; gap: 8px; margin-top: 8px; }
+    .social-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+    .si-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .si-tt { background: #010101; }
+    .si-fb { background: #1877F2; }
+    .si-gray { background: #777E80; width: 18px; height: 18px; border-radius: 4px; font-size: 9px; }
+    .logo-stage { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
+    @media (min-width: 768px) { .logo-stage { grid-template-columns: 1fr 1fr; } }
+    .logo-card { border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; border: 1px solid var(--stroke-container); }
+    .logo-card.light { background: #fff; }
+    .logo-card.dark { background: #101112; border-color: #101112; }
+    .logo-card img { height: 48px; width: auto; max-width: 86%; }
+    .logo-card.dark img { filter: brightness(0) invert(1); }
+    .logo-card figcaption { margin-top: 20px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--text-secondary); text-align: center; }
+    .logo-card.dark figcaption { color: #8D9496; }
+    .voice-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .voice-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
+    .voice-col { border-radius: var(--radius-md); padding: 24px; }
+    .voice-do { background: #F3FAF5; }
+    .voice-dont { background: #FDF4F4; }
+    .voice-col h3 { font-size: 18px; line-height: 24px; font-weight: 700; margin-bottom: 16px; }
+    .voice-do h3 { color: var(--success); }
+    .voice-dont h3 { color: var(--error); }
+    .voice-col ul { list-style: none; }
+    .voice-col li { font-size: 15px; line-height: 22px; padding: 10px 0; border-bottom: 1px solid rgba(16,17,18,0.06); color: var(--text-tertiary); }
+    .voice-col li:last-child { border-bottom: none; }
+    .voice-col li strong { color: var(--text-primary); display: block; margin-bottom: 2px; }
+    .voice-col li code { background: rgba(16,17,18,0.06); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+    .impl-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .impl-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .impl-card { border: 1px solid var(--stroke-container); border-radius: var(--radius-md); padding: 20px; }
+    .impl-card .badge { display: inline-block; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px; border-radius: var(--radius-sm); margin-bottom: 12px; }
+    .badge-locked { background: #FDF4F4; color: var(--error); }
+    .badge-controlled { background: #FFF8F0; color: var(--warning); }
+    .badge-flexible { background: #F3FAF5; color: var(--success); }
+    .impl-card h4 { font-size: 16px; line-height: 24px; font-weight: 700; margin-bottom: 8px; }
+    .impl-card ul { list-style: none; }
+    .impl-card li { font-size: 13px; line-height: 20px; color: var(--text-tertiary); padding: 3px 0; }
+    .impl-card li code { font-size: 12px; background: var(--container-secondary); padding: 1px 5px; border-radius: 3px; }
+    .file-list { background: var(--section-secondary); border-radius: var(--radius-md); padding: 20px 24px; margin-top: 24px; }
+    .file-list h4 { font-size: 14px; line-height: 20px; font-weight: 700; margin-bottom: 12px; }
+    .file-list code { display: block; font-size: 13px; line-height: 22px; color: var(--text-tertiary); }
+    .back-cover { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 32px; background: var(--section-primary); }
+    .back-cover img { height: 40px; margin-bottom: 32px; }
+    .back-cover p { font-size: 18px; line-height: 28px; color: var(--text-tertiary); max-width: 420px; }
+    .back-year { margin-top: 48px; font-size: 12px; line-height: 16px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; }
+
+    @page { size: A4 portrait; margin: 12mm 10mm 14mm; }
+    @page :first { margin: 0; }
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+      body { background: white; }
+      .nav { display: none !important; }
+      .sheet { break-before: page; page-break-before: always; box-shadow: none; }
+      .cover-wrap { break-before: auto; page-break-before: auto; }
+      .cover { display: grid !important; grid-template-columns: 1.05fr 0.95fr !important; grid-template-rows: none !important; min-height: 297mm; height: 297mm; break-after: page; page-break-after: always; }
+      .cover-copy { padding: 18mm 14mm 14mm 16mm; }
+      .cover-visual { min-height: 100%; }
+      .sheet-inner { padding: 10mm 8mm 8mm; max-width: none; }
+      .page-foot { margin-top: 16px; }
+      .comp-card, .trait, .swatch, .chip, .voice-col, .impl-card, .quote-block, .logo-card { break-inside: avoid; page-break-inside: avoid; }
+      .trait-grid, .voice-grid, .semantic-grid, .spec-pair, .two-col, .logo-stage { grid-template-columns: 1fr 1fr !important; }
+      .impl-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+      .swatch-hero { grid-template-columns: 2fr 1fr 1fr !important; }
+      .feedback-row { grid-template-columns: repeat(4, 1fr) !important; }
+      .chip-grid { grid-template-columns: repeat(5, 1fr) !important; }
+      .radius-row { grid-template-columns: repeat(5, 1fr) !important; }
+      .btn-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .comp-docs { grid-template-columns: 1fr 1fr !important; }
+      a { color: inherit; text-decoration: none; }
+      .back-cover { min-height: 240mm; break-before: page; }
+      .t-h2 { font-size: 28px; line-height: 34px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" aria-label="Design system">
+    <div class="nav-inner">
+      <a href="#cover"><img class="nav-logo" src="assets/logo-desktop.svg" alt="Prrrfct" /></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#foundations">Foundations</a></li>
+        <li><a href="#color">Color</a></li>
+        <li><a href="#type">Type</a></li>
+        <li><a href="#spacing">Spacing</a></li>
+        <li><a href="#tokens">Tokens</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#rules">Rules</a></li>
+        <li><a href="#implementation">Impl</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="cover-wrap sheet" id="cover">
+    <div class="cover">
+      <div class="cover-copy">
+        <div><img class="cover-logo" src="assets/logo-desktop.svg" alt="Prrrfct" /></div>
+        <div class="cover-mid">
+          <p class="cover-eyebrow">Design System · Volume 01</p>
+          <h1 class="cover-title">Design System</h1>
+          <p class="cover-tag">Foundations, tokens, and UI components for building calm, accessible Prrrfct experiences — sourced from code, not demo templates.</p>
+          <div class="cover-contents">
+            <a href="#about"><span>01</span>About</a>
+            <a href="#foundations"><span>02</span>Foundations</a>
+            <a href="#color"><span>03</span>Color</a>
+            <a href="#type"><span>04</span>Typography</a>
+            <a href="#spacing"><span>05</span>Spacing &amp; layout</a>
+            <a href="#tokens"><span>06</span>Token map</a>
+            <a href="#components"><span>07</span>Components</a>
+            <a href="#rules"><span>08</span>Rules</a>
+            <a href="#implementation"><span>09</span>Implementation</a>
+          </div>
+        </div>
+        <div class="cover-meta">
+          <div>
+            <div class="cover-year">2025</div>
+            <small>Source of truth · globals.css + tailwind.config.ts</small>
+          </div>
+          <small>Companion to the Brand Book</small>
+        </div>
+      </div>
+      <div class="cover-visual">
+        <img src="assets/hero-poster.jpg" alt="Orange tabby cat with blue eyes, the Prrrfct companion" />
+      </div>
+    </div>
+  </header>
+
+  <section class="sheet" id="about">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">01 — About this system</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Foundations + tokens + components.</h2>
+      <p class="t-body-lg section-lede">The Prrrfct Design System is the working layer between brand expression and product UI. It keeps every screen calm, consistent, and accessible — without inventing styles on the fly.</p>
+      <blockquote class="quote-block">
+        <p>Code is the source of truth. Tokens live in <code>globals.css</code> and <code>tailwind.config.ts</code>. Components live in <code>components/ui/**</code>. Documentation follows those files — never ACME demo data.</p>
+        <cite>Operating principle · PROJECT_CONTEXT.md</cite>
+      </blockquote>
+      <div class="trait-grid">
+        <article class="trait"><div class="trait-label">Foundations</div><h3>Primitives that do not drift</h3><p>Color, type, spacing, radius, and breakpoints. Defined once as CSS custom properties, consumed through semantic aliases and Tailwind theme keys.</p></article>
+        <article class="trait"><div class="trait-label">Design tokens</div><h3>Decisions as variables</h3><p>Self-contained design decisions — a color, a size, a type scale — mapped from primitive → semantic → utility class so product code stays intentional.</p></article>
+        <article class="trait"><div class="trait-label">Components</div><h3>Interactive building blocks</h3><p>Button, Text, Input, Card, Logo, links, care and social cards — adapted shadcn/ui patterns locked to Prrrfct tokens and WCAG 2.2 AA.</p></article>
+        <article class="trait"><div class="trait-label">Brand Book</div><h3>Expression, not implementation</h3><p>The Brand Book covers personality, logo, imagery, and voice. This Design System covers how those values become measurable UI tokens and components.</p></article>
+      </div>
+      <div class="callout"><strong>Structure note.</strong> Documentation IA (About → Foundations → Design tokens → Components → Rules) was inspired by the Specify/Notion Design System template. All actual values in this document come from the live Prrrfct repo — coral brand, Plus Jakarta Sans, and mono scale — not the ACME violet/Inter demo content in that template.</div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>01 / About</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="foundations">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">02 — Foundations</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">The shared visual grammar.</h2>
+      <p class="t-body-lg section-lede">Foundations are the non-negotiable building materials. Product features compose with them; they do not redefine them.</p>
+      <div class="trait-grid">
+        <article class="trait"><div class="trait-label">Color</div><h3>Brand · Mono · Feedback</h3><p>Three brand corals, a 16-step mono scale, and four feedback hues. Semantics map fills, text, and strokes onto those primitives.</p></article>
+        <article class="trait"><div class="trait-label">Typography</div><h3>Plus Jakarta Sans</h3><p>One family. Ten roles from H1–caption. Mobile-first sizes step up at the <code>lg</code> (1280px) breakpoint.</p></article>
+        <article class="trait"><div class="trait-label">Spacing</div><h3>4 → 64px scale</h3><p>Named steps <code>2xs</code> through <code>5xl</code>, plus layout aliases for page padding, container padding, and section margin.</p></article>
+        <article class="trait"><div class="trait-label">Shape &amp; layout</div><h3>Radius · breakpoints · widths</h3><p>Interactive and container radii, full-pill buttons, screens at 768 / 1280 / 1440, and responsive max-widths for page and form.</p></article>
+      </div>
+      <h3 class="subhead">Layer model</h3>
+      <table class="layout-table">
+        <thead><tr><th>Layer</th><th>Where</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>1 · Primitives</td><td class="mono">globals.css :root</td><td>--primitive-*, --space-primitive-*, radii</td></tr>
+          <tr><td>2 · Semantic aliases</td><td class="mono">globals.css :root</td><td>--color-*, --space-*, layout vars</td></tr>
+          <tr><td>3 · Tailwind theme</td><td class="mono">tailwind.config.ts</td><td>brand-primary, text-*, spacing keys, screens</td></tr>
+          <tr><td>4 · Components</td><td class="mono">components/ui/**</td><td>Consume theme keys only — no default utilities</td></tr>
+        </tbody>
+      </table>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>02 / Foundations</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="color">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">03 — Color</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Coral warmth, quiet neutrals.</h2>
+      <p class="t-body-lg section-lede">Brand coral is the accent. Mono carries structure and type. Feedback colors are reserved for status — never decoration.</p>
+      <h3 class="subhead">Brand primitives</h3>
+      <div class="swatch-hero">
+        <div class="swatch tall" style="background:#FF5733"><div class="hex">#FF5733</div><div class="token">--primitive-brand-50 · brand-primary</div></div>
+        <div class="swatch" style="background:#CD4224"><div class="hex">#CD4224</div><div class="token">--primitive-brand-60 · brand-secondary</div></div>
+        <div class="swatch" style="background:#A6351D"><div class="hex">#A6351D</div><div class="token">--primitive-brand-70 · active / press</div></div>
+      </div>
+      <h3 class="subhead">Monochrome scale</h3>
+      <div class="mono-bar" aria-hidden="true"><span style="background:#FFFFFF"></span><span style="background:#FAFAFA"></span><span style="background:#F5F5F5"></span><span style="background:#EEEEEE"></span><span style="background:#E0E0E0"></span><span style="background:#CBCDCD"></span><span style="background:#8D9496"></span><span style="background:#777E80"></span><span style="background:#505759"></span><span style="background:#383D3E"></span><span style="background:#282C2D"></span><span style="background:#202324"></span><span style="background:#181A1B"></span><span style="background:#101112"></span><span style="background:#111111"></span></div>
+      <div class="chip-grid"><div class="chip"><div class="chip-color" style="background:#FFFFFF;border-bottom:1px solid #EEEEEE"></div><div class="chip-meta"><div class="hex">#FFFFFF</div><div class="token">mono-0</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#FAFAFA;"></div><div class="chip-meta"><div class="hex">#FAFAFA</div><div class="token">mono-5</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#F5F5F5;"></div><div class="chip-meta"><div class="hex">#F5F5F5</div><div class="token">mono-10</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#EEEEEE;"></div><div class="chip-meta"><div class="hex">#EEEEEE</div><div class="token">mono-15</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#E0E0E0;"></div><div class="chip-meta"><div class="hex">#E0E0E0</div><div class="token">mono-20</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#CBCDCD;"></div><div class="chip-meta"><div class="hex">#CBCDCD</div><div class="token">mono-30</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#8D9496;"></div><div class="chip-meta"><div class="hex">#8D9496</div><div class="token">mono-40</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#777E80;"></div><div class="chip-meta"><div class="hex">#777E80</div><div class="token">mono-50</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#505759;"></div><div class="chip-meta"><div class="hex">#505759</div><div class="token">mono-60</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#383D3E;"></div><div class="chip-meta"><div class="hex">#383D3E</div><div class="token">mono-70</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#282C2D;"></div><div class="chip-meta"><div class="hex">#282C2D</div><div class="token">mono-80</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#202324;"></div><div class="chip-meta"><div class="hex">#202324</div><div class="token">mono-85</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#181A1B;"></div><div class="chip-meta"><div class="hex">#181A1B</div><div class="token">mono-90</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#101112;"></div><div class="chip-meta"><div class="hex">#101112</div><div class="token">mono-95</div></div></div>
+<div class="chip"><div class="chip-color" style="background:#111111;"></div><div class="chip-meta"><div class="hex">#111111</div><div class="token">mono-100</div></div></div>
+</div>
+      <h3 class="subhead">Feedback primitives</h3>
+      <div class="feedback-row">
+        <div class="swatch" style="background:#008035;min-height:100px"><div class="hex">#008035</div><div class="token">success-50</div></div>
+        <div class="swatch" style="background:#B65116;min-height:100px"><div class="hex">#B65116</div><div class="token">warning-50</div></div>
+        <div class="swatch" style="background:#B80015;min-height:100px"><div class="hex">#B80015</div><div class="token">error-50</div></div>
+        <div class="swatch" style="background:#15498B;min-height:100px"><div class="hex">#15498B</div><div class="token">info-50</div></div>
+      </div>
+      <h3 class="subhead">Semantic aliases</h3>
+      <div class="semantic-grid">
+        <div class="sem-group">
+          <h4>Brand &amp; fills</h4>
+          <div class="sem-row"><span class="sem-dot" style="background:#FF5733"></span><span class="name">brand-primary</span><span class="hex">#FF5733</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#CD4224"></span><span class="name">brand-secondary</span><span class="hex">#CD4224</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#FFFFFF"></span><span class="name">section-primary</span><span class="hex">#FFFFFF</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#FAFAFA"></span><span class="name">section-secondary</span><span class="hex">#FAFAFA</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#FFFFFF"></span><span class="name">container-primary</span><span class="hex">#FFFFFF</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#F5F5F5"></span><span class="name">container-secondary</span><span class="hex">#F5F5F5</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#EEEEEE"></span><span class="name">container-tertiary</span><span class="hex">#EEEEEE</span></div>
+        </div>
+        <div class="sem-group">
+          <h4>Text, stroke &amp; feedback</h4>
+          <div class="sem-row"><span class="sem-dot" style="background:#101112"></span><span class="name">text primary</span><span class="hex">#101112</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#8D9496"></span><span class="name">text secondary</span><span class="hex">#8D9496</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#505759"></span><span class="name">text tertiary</span><span class="hex">#505759</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#777E80"></span><span class="name">text disabled</span><span class="hex">#777E80</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#FFFFFF"></span><span class="name">text inverse</span><span class="hex">#FFFFFF</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#CBCDCD"></span><span class="name">stroke-container-primary</span><span class="hex">#CBCDCD</span></div>
+          <div class="sem-row"><span class="sem-dot" style="background:#008035"></span><span class="name">success / warning / error / info</span><span class="hex">feedback</span></div>
+        </div>
+      </div>
+      <div class="usage-note"><strong>Do not use default Tailwind colors.</strong> Utilities like <code>text-gray-500</code>, <code>bg-red-500</code>, or arbitrary hex in product code bypass the system. Prefer semantic keys: <code>text-primary</code>, <code>bg-brand-primary</code>, <code>border-stroke-container-primary</code>.</div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>03 / Color</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="type">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">04 — Typography</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">One family. Clear hierarchy.</h2>
+      <p class="t-body-lg section-lede">Plus Jakarta Sans carries every UI surface. Scales are mobile-first and lift at the desktop (<code>lg</code>) breakpoint.</p>
+      <div class="type-intro">
+        <div>
+          <p class="t-h3" style="margin-bottom:8px">Plus Jakarta Sans</p>
+          <p class="t-body-md" style="color:var(--text-tertiary)">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm<br/>0123456789 · The quiet joy of daily care.</p>
+        </div>
+        <div class="type-meta">
+          <dl>
+            <dt>Family</dt><dd>--font-family-sans</dd>
+            <dt>Weights</dt><dd>400 · 500 · 600 · 700</dd>
+            <dt>Roles</dt><dd>H1–H6 · body-lg/md · caption-md/sm</dd>
+            <dt>Component</dt><dd>Text · variants + colors</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H1</span><span class="spec">text-h1 · 700 · −0.02em</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h1">40 / 48</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h1">64 / 72</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H2</span><span class="spec">text-h2 · 700 · −0.015em</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h2">32 / 40</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h2">48 / 56</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H3</span><span class="spec">text-h3 · 700 · −0.01em</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h3">28 / 36</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h3">40 / 48</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H4</span><span class="spec">text-h4 · 700 · −0.005em</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h4">24 / 32</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h4">32 / 40</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H5</span><span class="spec">text-h5 · 600</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h5">20 / 28</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h5">24 / 32</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">H6</span><span class="spec">text-h6 · 600</span></div>
+        <div class="spec-pair">
+          <div class="spec-col"><div class="device">Mobile</div><div class="spec-m-h6">18 / 24</div></div>
+          <div class="spec-col"><div class="device">Desktop ≥1280</div><div class="spec-d-h6">20 / 28</div></div>
+        </div>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">Body LG</span><span class="spec">text-body-lg · 18 / 28 (both)</span></div>
+        <p class="spec-body-lg spec-sample muted">Caring for your AI-powered furry friend brings a relaxing moment of joy to your day.</p>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">Body MD</span><span class="spec">text-body-md · 16 / 24 (both)</span></div>
+        <p class="spec-body-md spec-sample muted">Default UI copy. Used in buttons, inputs, care items, and most paragraphs.</p>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">Caption MD</span><span class="spec">text-caption-md · 14 / 20</span></div>
+        <p class="spec-cap-md spec-sample muted">Footer links, helper text, secondary labels.</p>
+      </div>
+      <div class="specimen">
+        <div class="specimen-label"><span class="lvl">Caption SM</span><span class="spec">text-caption-sm · 12 / 16</span></div>
+        <p class="spec-cap-sm spec-sample muted">Input labels, micro-meta, overlines.</p>
+      </div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>04 / Typography</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="spacing">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">05 — Spacing, radius &amp; layout</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Rhythm without default utilities.</h2>
+      <p class="t-body-lg section-lede">Spacing and radius come only from Prrrfct tokens. Default Tailwind steps like <code>p-4</code> or <code>rounded-xl</code> are forbidden.</p>
+      <div class="two-col">
+        <div>
+          <h3 class="subhead">Spacing scale</h3>
+          <div class="space-list"><div class="space-row"><span class="val">4px</span><span class="token">2xs</span><div class="space-bar" style="width:4px"></div></div><div class="space-row"><span class="val">8px</span><span class="token">xs</span><div class="space-bar" style="width:8px"></div></div><div class="space-row"><span class="val">12px</span><span class="token">sm</span><div class="space-bar" style="width:12px"></div></div><div class="space-row"><span class="val">16px</span><span class="token">md</span><div class="space-bar" style="width:16px"></div></div><div class="space-row"><span class="val">20px</span><span class="token">lg</span><div class="space-bar" style="width:20px"></div></div><div class="space-row"><span class="val">24px</span><span class="token">xl</span><div class="space-bar" style="width:24px"></div></div><div class="space-row"><span class="val">32px</span><span class="token">2xl</span><div class="space-bar" style="width:32px"></div></div><div class="space-row"><span class="val">40px</span><span class="token">3xl</span><div class="space-bar" style="width:40px"></div></div><div class="space-row"><span class="val">48px</span><span class="token">4xl</span><div class="space-bar" style="width:48px"></div></div><div class="space-row"><span class="val">64px</span><span class="token">5xl *</span><div class="space-bar" style="width:64px"></div></div></div>
+          <p class="t-caption-sm" style="color:var(--text-secondary);margin-top:12px">* <code>--space-primitive-5xl</code> exists in globals.css. Tailwind spacing keys currently expose 2xs–4xl plus page/container/section-gap aliases.</p>
+        </div>
+        <div>
+          <h3 class="subhead">Border radius</h3>
+          <div class="radius-row">
+            <div class="radius-sample" style="border-radius:8px"><span class="px">8</span><span class="lbl">sm<br/>interactive</span></div>
+            <div class="radius-sample" style="border-radius:16px"><span class="px">16</span><span class="lbl">md<br/>container</span></div>
+            <div class="radius-sample" style="border-radius:24px"><span class="px">24</span><span class="lbl">lg<br/>container</span></div>
+            <div class="radius-sample" style="border-radius:28px"><span class="px">28</span><span class="lbl">button<br/>interactive-lg</span></div>
+            <div class="radius-sample" style="border-radius:9999px"><span class="px">∞</span><span class="lbl">full<br/>buttons</span></div>
+          </div>
+          <p class="t-caption-sm" style="color:var(--text-secondary);margin-top:16px">Buttons use <code>rounded-full</code> in code. Token <code>rounded-button</code> maps to interactive-lg (28px) if needed.</p>
+          <h3 class="subhead">Breakpoints</h3>
+          <div class="bp-row">
+            <div class="bp-chip">md<span>768px</span></div>
+            <div class="bp-chip">lg<span>1280px</span></div>
+            <div class="bp-chip">xl<span>1440px</span></div>
+          </div>
+        </div>
+      </div>
+      <h3 class="subhead">Layout aliases &amp; max-widths</h3>
+      <table class="layout-table">
+        <thead><tr><th>Token</th><th>Mobile</th><th>md ≥768</th><th>lg ≥1280</th></tr></thead>
+        <tbody>
+          <tr><td>padding-page</td><td>16px (md)</td><td>20px (lg)</td><td>48px (4xl)</td></tr>
+          <tr><td>padding-container</td><td>16px</td><td>20px</td><td>32px (2xl)</td></tr>
+          <tr><td>margin-section</td><td>16px</td><td>20px</td><td>32px</td></tr>
+          <tr><td>max-width-page</td><td>100%</td><td>928px</td><td>1312px</td></tr>
+          <tr><td>max-width-form</td><td>100%</td><td>560px</td><td>740px</td></tr>
+          <tr><td>max-w-2xl (TW)</td><td colspan="3">592px fixed</td></tr>
+          <tr><td>stroke-container-sm</td><td colspan="3">1px · color stroke-container-primary</td></tr>
+        </tbody>
+      </table>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>05 / Spacing &amp; layout</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="tokens">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">06 — Design tokens map</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Primitive → semantic → Tailwind.</h2>
+      <p class="t-body-lg section-lede">Every utility class traces back to a CSS variable. Prefer the semantic Tailwind name in product code.</p>
+      <h3 class="subhead">Color tokens</h3>
+      <table class="token-table">
+        <thead><tr><th>Primitive</th><th>HEX</th><th>Semantic CSS</th><th>Tailwind</th></tr></thead>
+        <tbody>
+          <tr><td><span class="token-dot" style="background:#FF5733"></span>brand-50</td><td>#FF5733</td><td><code>--color-brand-primary</code></td><td><code>brand-primary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#CD4224"></span>brand-60</td><td>#CD4224</td><td><code>--color-brand-secondary</code></td><td><code>brand-secondary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#FFFFFF"></span>mono-0</td><td>#FFFFFF</td><td><code>--color-fill-section-primary</code></td><td><code>section-primary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#FAFAFA"></span>mono-5</td><td>#FAFAFA</td><td><code>--color-fill-section-secondary</code></td><td><code>section-secondary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#F5F5F5"></span>mono-10</td><td>#F5F5F5</td><td><code>--color-fill-container-secondary</code></td><td><code>container-secondary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#EEEEEE"></span>mono-15</td><td>#EEEEEE</td><td><code>--color-fill-container-tertiary</code></td><td><code>container-tertiary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#101112"></span>mono-95</td><td>#101112</td><td><code>--color-text-primary</code></td><td><code>primary</code> (text)</td></tr>
+          <tr><td><span class="token-dot" style="background:#8D9496"></span>mono-40</td><td>#8D9496</td><td><code>--color-text-secondary</code></td><td><code>secondary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#505759"></span>mono-60</td><td>#505759</td><td><code>--color-text-tertiary</code></td><td><code>tertiary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#777E80"></span>mono-50</td><td>#777E80</td><td><code>--color-text-disabled</code></td><td><code>disabled</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#FFFFFF"></span>mono-0</td><td>#FFFFFF</td><td><code>--color-text-primary-inverse</code></td><td><code>inverse</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#CBCDCD"></span>mono-30</td><td>#CBCDCD</td><td><code>--color-stroke-container-primary</code></td><td><code>stroke-container-primary</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#008035"></span>success-50</td><td>#008035</td><td><code>--color-feedback-success</code></td><td><code>success</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#B65116"></span>warning-50</td><td>#B65116</td><td><code>--color-feedback-warning</code></td><td><code>warning</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#B80015"></span>error-50</td><td>#B80015</td><td><code>--color-feedback-error</code></td><td><code>error</code></td></tr>
+          <tr><td><span class="token-dot" style="background:#15498B"></span>info-50</td><td>#15498B</td><td><code>--color-feedback-info</code></td><td><code>info</code></td></tr>
+        </tbody>
+      </table>
+      <h3 class="subhead">Measurement tokens</h3>
+      <table class="token-table">
+        <thead><tr><th>Primitive</th><th>Value</th><th>Alias / TW key</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td>--space-primitive-2xs … 5xl</td><td>4–64px</td><td><code>2xs</code> … <code>4xl</code>, <code>page</code>, <code>container</code>, <code>section-gap</code></td><td>padding, gap, margin</td></tr>
+          <tr><td>--radius-interactive-sm</td><td>8px</td><td><code>rounded-sm</code></td><td>inputs, footer links</td></tr>
+          <tr><td>--radius-interactive-lg</td><td>28px</td><td><code>rounded-button</code></td><td>interactive large</td></tr>
+          <tr><td>--radius-container-md / lg</td><td>16 / 24px</td><td><code>rounded-md</code> / <code>rounded-lg</code></td><td>cards, panels</td></tr>
+          <tr><td>— (full pill)</td><td>9999px</td><td><code>rounded-full</code></td><td>buttons, social card</td></tr>
+          <tr><td>--stroke-container-sm</td><td>1px</td><td><code>border-container-sm</code></td><td>EmailCard border</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Sync model.</strong> Unlike the Specify ACME template (Figma → Notion), Prrrfct tokens sync from code outward. Change <code>globals.css</code> first, keep <code>tailwind.config.ts</code> aligned, then update this document.</div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>06 / Token map</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="components">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">07 — Components</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">UI catalog from <code>components/ui</code>.</h2>
+      <p class="t-body-lg section-lede">Specimens below mirror live props and token classes. Do not casually restyle these files — they are locked foundation.</p>
+
+      <article class="comp-card" id="comp-button">
+        <div class="comp-head">
+          <h3>Button</h3>
+          <p>Primary CTAs and secondary actions. Pill shape, bold body-md type, focus ring.</p>
+          <div class="comp-meta"><span class="tag brand">Button.tsx</span><span class="tag">variants ×6</span><span class="tag">fullWidth</span></div>
+        </div>
+        <div class="comp-stage col">
+          <div class="btn-grid">
+            <div class="btn-cell"><div class="state-label">Primary</div><span class="btn btn-primary">Get early access</span></div>
+            <div class="btn-cell"><div class="state-label">Secondary</div><span class="btn btn-secondary">Learn more</span></div>
+            <div class="btn-cell"><div class="state-label">Tertiary</div><span class="btn btn-tertiary">Ghost action</span></div>
+            <div class="btn-cell"><div class="state-label">Quaternary</div><span class="btn btn-quaternary">Quiet action</span></div>
+            <div class="btn-cell dark-bg"><div class="state-label">Inverse</div><span class="btn btn-inverse">On dark</span></div>
+            <div class="btn-cell"><div class="state-label">Brand-primary · focus</div><span class="btn btn-brand-primary btn-focus">Focused</span></div>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Variants / props</h4><ul>
+            <li><code>variant</code>: primary · secondary · tertiary · quaternary · inverse · brand-primary</li>
+            <li><code>fullWidth</code>: boolean · Native <code>button</code> attrs forwarded</li>
+            <li>Size locked: <code>px-sm py-xs text-body-md</code> · <code>rounded-full</code></li>
+          </ul></div>
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>bg-brand-primary</code><code>text-inverse</code><code>hover:bg-brand-secondary</code><code>border-brand-primary</code><code>text-primary</code><code>text-brand-primary</code><code>text-secondary</code><code>bg-inverse</code><code>focus:ring-2</code>
+          </div></div>
+          <div class="a11y-note"><strong>A11y · </strong>Real <code>&lt;button&gt;</code>. Focus: <code>focus:outline-none focus:ring-2 focus:ring-offset-2</code>. Disabled uses opacity + <code>cursor-not-allowed</code>.</div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-text">
+        <div class="comp-head">
+          <h3>Text</h3>
+          <p>Polymorphic typography primitive. Maps variant → type scale and color → semantic text tokens.</p>
+          <div class="comp-meta"><span class="tag brand">Text.tsx</span><span class="tag">as prop</span><span class="tag">10 variants</span></div>
+        </div>
+        <div class="comp-stage col" style="gap:8px;background:#fff;border-top:1px solid #EEEEEE">
+          <p class="spec-m-h5" style="color:#101112">Heading sample · text-h5</p>
+          <p class="spec-body-md" style="color:#101112">Body MD primary — default paragraph role.</p>
+          <p class="spec-body-md" style="color:#8D9496">Body MD secondary</p>
+          <p class="spec-cap-md" style="color:#505759">Caption MD tertiary</p>
+          <p class="spec-body-md" style="color:#FF5733">Brand color</p>
+          <p class="spec-body-md" style="color:#B80015">Error color</p>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Variants / props</h4><ul>
+            <li><code>variant</code>: h1–h6 · body-lg · body-md · caption-md · caption-sm</li>
+            <li><code>color</code>: primary · secondary · tertiary · brand · inverse · error · success</li>
+            <li><code>as</code>: any element (default <code>p</code>) — use real headings for hierarchy</li>
+          </ul></div>
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>text-h1</code>…<code>text-caption-sm</code><code>text-primary</code><code>text-secondary</code><code>text-tertiary</code><code>text-brand-primary</code><code>text-inverse</code><code>text-error</code><code>text-success</code>
+          </div></div>
+          <div class="a11y-note"><strong>A11y · </strong>Keep semantic heading order. Prefer <code>as="h2"</code> over styling a <code>p</code> to look like a heading.</div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-input">
+        <div class="comp-head">
+          <h3>Input</h3>
+          <p>Labeled text field with error state and branded focus ring.</p>
+          <div class="comp-meta"><span class="tag brand">Input.tsx</span><span class="tag">label</span><span class="tag">error</span></div>
+        </div>
+        <div class="comp-stage" style="gap:24px">
+          <div class="field"><label for="demo-email">Email</label><input id="demo-email" type="email" placeholder="you@example.com" /></div>
+          <div class="field"><label>Focused</label><div class="fake-input focus">typing…</div></div>
+          <div class="field error"><label>Email</label><input type="email" value="not-an-email" readonly /><span class="err">Enter a valid email address</span></div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Props</h4><ul>
+            <li><code>label?</code> — associated via <code>htmlFor</code> + <code>useId</code></li>
+            <li><code>error?</code> — sets error border + message</li>
+            <li>All native input attributes</li>
+          </ul></div>
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>bg-container-primary</code><code>text-primary</code><code>placeholder:text-disabled</code><code>rounded-sm</code><code>p-sm</code><code>text-body-md</code><code>border-disabled</code><code>border-error</code><code>focus:ring-brand-primary</code><code>text-caption-sm</code>
+          </div></div>
+          <div class="a11y-note"><strong>A11y · </strong>Always pass <code>label</code> (or aria-label). Focus ring is 2px brand-primary. Pair errors with <code>aria-invalid</code> / <code>aria-describedby</code> when wiring forms.</div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-card">
+        <div class="comp-head">
+          <h3>Card</h3>
+          <p>Simple elevated container for grouped content.</p>
+          <div class="comp-meta"><span class="tag brand">Card.tsx</span></div>
+        </div>
+        <div class="comp-stage center">
+          <div class="card-demo">
+            <h4>Daily care</h4>
+            <p>Feed, groom, pet, and play — framed as connection, not chores.</p>
+            <span class="btn btn-primary" style="margin-top:8px">Open care loop</span>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Props</h4><ul><li><code>children</code>, optional <code>className</code></li><li>No variants — compose content inside</li></ul></div>
+          <div><h4>Token classes</h4><div class="token-list"><code>bg-container-primary</code><code>rounded-lg</code><code>p-xl</code><code>space-y-sm</code><code>shadow-sm</code></div></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-logo">
+        <div class="comp-head">
+          <h3>Logo</h3>
+          <p>Responsive wordmark: mobile SVG below md, desktop SVG from md up.</p>
+          <div class="comp-meta"><span class="tag brand">Logo.tsx</span><span class="tag">assets/logo-*.svg</span></div>
+        </div>
+        <div class="comp-stage">
+          <div class="logo-stage">
+            <figure class="logo-card light"><img src="assets/logo-desktop.svg" alt="Prrrfct logo on light" /><figcaption>Light · desktop asset</figcaption></figure>
+            <figure class="logo-card dark"><img src="assets/logo-desktop.svg" alt="Prrrfct logo on dark" /><figcaption>Dark · inverted for contrast demo</figcaption></figure>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Behavior</h4><ul>
+            <li><code>/logo-mobile.svg</code> · <code>block md:hidden</code></li>
+            <li><code>/logo-desktop.svg</code> · <code>hidden md:block</code></li>
+            <li>Default size class <code>h-8 w-auto</code></li>
+          </ul></div>
+          <div><h4>A11y</h4><ul>
+            <li>Both images share <code>alt="Prrrfct Logo"</code></li>
+            <li>Prefer a single landmark link wrapping Logo in nav</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-standalone-link">
+        <div class="comp-head">
+          <h3>StandaloneLink</h3>
+          <p>Text link with size, selection, disabled, and optional icon slots.</p>
+          <div class="comp-meta"><span class="tag brand">StandaloneLink.tsx</span><span class="tag">xs · sm · md</span></div>
+        </div>
+        <div class="comp-stage" style="gap:32px">
+          <a class="link-demo" href="#">Default link</a>
+          <a class="link-demo hover" href="#">Hover / emphasis</a>
+          <a class="link-demo selected" href="#">Selected</a>
+          <span class="link-demo disabled">Disabled</span>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Props</h4><ul>
+            <li><code>href</code>, <code>selected</code>, <code>disabled</code></li>
+            <li><code>size</code>: xs · sm · md</li>
+            <li><code>icon</code> + <code>iconPosition</code>: none · left · right</li>
+          </ul></div>
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>text-caption-sm</code><code>text-body-md</code><code>text-body-lg</code><code>text-primary</code><code>text-brand-primary</code><code>text-brand-secondary</code><code>text-disabled</code><code>py-sm</code><code>py-xl</code><code>py-2xl</code>
+          </div></div>
+          <div class="a11y-note"><strong>A11y · </strong>Disabled removes href and sets <code>pointer-events-none</code>. Active press uses brand-70 (#A6351D).</div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-footer-link">
+        <div class="comp-head">
+          <h3>FooterLink</h3>
+          <p>Compact underlined caption link with reserved focus border (no layout jump).</p>
+          <div class="comp-meta"><span class="tag brand">FooterLink.tsx</span></div>
+        </div>
+        <div class="comp-stage" style="gap:24px">
+          <a class="footer-link-demo" href="#">Privacy policy</a>
+          <a class="footer-link-demo" href="#">Terms of use</a>
+          <a class="footer-link-demo focus" href="#">Focus visible</a>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>p-1</code><code>rounded-sm</code><code>text-caption-md</code><code>text-tertiary</code><code>hover:text-primary</code><code>focus-visible:border-primary</code>
+          </div></div>
+          <div><h4>A11y</h4><ul>
+            <li>3px transparent border reserves space for focus</li>
+            <li><code>focus-visible</code> only — mouse users avoid sticky ring</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-care-item">
+        <div class="comp-head">
+          <h3>CareItem</h3>
+          <p>Care-loop row: circular image + bold title + description, vertically centered.</p>
+          <div class="comp-meta"><span class="tag brand">CareItem.tsx</span></div>
+        </div>
+        <div class="comp-stage col">
+          <div class="care-item">
+            <div class="care-avatar"><img src="assets/hero-poster.jpg" alt="" /></div>
+            <div class="care-text"><span><strong>Feed</strong> Share a quiet meal together.</span></div>
+          </div>
+          <div class="care-item">
+            <div class="care-avatar"><img src="assets/hero-poster.jpg" alt="" style="object-position:30% 40%" /></div>
+            <div class="care-text"><span><strong>Groom</strong> A gentle brush, a calmer day.</span></div>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Props</h4><ul>
+            <li><code>title</code>, <code>description</code>, <code>imageSrc</code></li>
+            <li>Avatar 60→80px at md; gap-sm (12px)</li>
+          </ul></div>
+          <div><h4>Token / a11y</h4><div class="token-list">
+            <code>gap-sm</code><code>bg-container-secondary</code><code>text-primary</code><code>text-body-md</code><code>md:text-body-lg</code>
+          </div>
+          <p class="t-caption-sm" style="margin-top:8px;color:var(--text-tertiary)">Image is decorative: <code>alt=""</code> + <code>aria-hidden</code>.</p></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-email-card">
+        <div class="comp-head">
+          <h3>EmailCard</h3>
+          <p>Early-access signup panel composing Text + EmailSignupForm.</p>
+          <div class="comp-meta"><span class="tag brand">EmailCard.tsx</span><span class="tag">composition</span></div>
+        </div>
+        <div class="comp-stage center">
+          <div class="email-card">
+            <h3>Get early access—and extra treats!</h3>
+            <div class="email-row">
+              <input type="email" placeholder="Email address" aria-label="Email address" />
+              <span class="btn btn-primary">Join waitlist</span>
+            </div>
+            <p class="t-body-md" style="font-weight:700;margin-bottom:4px">Prrrfct is launching in December 2025.</p>
+            <p class="t-body-md" style="color:var(--text-tertiary)">Sign up early to reserve your spot—and get <strong style="color:var(--text-primary)">5 free Cat toys and treats</strong> when we go live!</p>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Structure</h4><ul>
+            <li>Width full / <code>lg:w-[596px]</code></li>
+            <li>H3 headline via Text · form via EmailSignupForm</li>
+          </ul></div>
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>bg-section-primary</code><code>rounded-lg</code><code>border-container-sm</code><code>border-container-primary</code><code>py-xl</code><code>px-2xl</code><code>shadow-sm</code><code>mb-lg</code>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-social-card">
+        <div class="comp-head">
+          <h3>SocialCard</h3>
+          <p>Pill card promoting Gingerbread follows; embeds SocialLinksColor.</p>
+          <div class="comp-meta"><span class="tag brand">SocialCard.tsx</span></div>
+        </div>
+        <div class="comp-stage center">
+          <div class="social-card">
+            <img class="social-avatar" src="assets/hero-poster.jpg" alt="Gingerbread the Prrrfct Cat" />
+            <div>
+              <p class="t-body-md" style="font-weight:600;letter-spacing:-0.02em">Follow our mascot Gingerbread</p>
+              <div class="social-icons">
+                <span class="social-icon si-ig" title="Instagram">IG</span>
+                <span class="social-icon si-tt" title="TikTok">TT</span>
+                <span class="social-icon si-fb" title="Facebook">f</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Token classes</h4><div class="token-list">
+            <code>max-w-[363px]</code><code>gap-sm</code><code>p-sm</code><code>rounded-full</code><code>bg-section-primary</code><code>border-container-tertiary</code><code>gap-xs</code>
+          </div></div>
+          <div><h4>A11y</h4><ul>
+            <li>Avatar has meaningful alt text</li>
+            <li>Social links provide platform aria-labels</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="comp-card" id="comp-social-icons">
+        <div class="comp-head">
+          <h3>SocialIcons · SocialLinksColor</h3>
+          <p>Two icon sets for the same platforms: gray (footer/chrome) and full-color (promo).</p>
+          <div class="comp-meta"><span class="tag brand">SocialIcons.tsx</span><span class="tag brand">SocialLinksColor.tsx</span></div>
+        </div>
+        <div class="comp-stage" style="justify-content:space-around;width:100%">
+          <div style="text-align:center">
+            <div class="state-label">SocialIcons (gray)</div>
+            <div style="display:flex;gap:16px;justify-content:center;margin-top:8px">
+              <span class="social-icon si-gray">IG</span><span class="social-icon si-gray">TT</span><span class="social-icon si-gray">f</span>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <div class="state-label">SocialLinksColor</div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+              <span class="social-icon si-ig">IG</span><span class="social-icon si-tt">TT</span><span class="social-icon si-fb">f</span>
+            </div>
+          </div>
+        </div>
+        <div class="comp-docs">
+          <div><h4>Visible platforms</h4><ul>
+            <li>instagram · tiktok · facebook (x/reddit/youtube reserved)</li>
+            <li>Icons decorative (<code>alt=""</code> + <code>aria-hidden</code>)</li>
+            <li>Links: <code>target="_blank"</code> + <code>rel="noopener noreferrer"</code></li>
+          </ul></div>
+          <div><h4>Sizes / tokens</h4><div class="token-list">
+            <code>gap-md</code><code>w-[18px] h-[18px]</code><code>md:w-xl md:h-xl</code><code>w-xl h-xl</code><code>gap-xs</code>
+          </div>
+          <p class="t-caption-sm" style="margin-top:8px;color:var(--text-tertiary)">SocialLinksColor aria-label: “Follow Gingerbread on {platform}”.</p></div>
+        </div>
+      </article>
+
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>07 / Components</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="rules">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">08 — Usage rules</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Do &amp; don’t — from PROJECT_CONTEXT.</h2>
+      <p class="t-body-lg section-lede">These rules are non-negotiable. If an instruction conflicts with them, the rule wins.</p>
+      <div class="voice-grid">
+        <div class="voice-col voice-do">
+          <h3>Do</h3>
+          <ul>
+            <li><strong>Use only Prrrfct tokens</strong>Classes from <code>tailwind.config.ts</code>: <code>p-md</code>, <code>text-primary</code>, <code>bg-brand-primary</code>.</li>
+            <li><strong>Semantic HTML</strong>Real buttons, links, inputs, and heading hierarchy — no div soup.</li>
+            <li><strong>WCAG 2.2 AA</strong>Keyboard access, logical focus order, focus rings, labeled fields.</li>
+            <li><strong>Ask before foundation changes</strong>globals.css, tailwind.config.ts, and components/ui are locked.</li>
+            <li><strong>Check existing tokens first</strong>Reuse before inventing.</li>
+          </ul>
+        </div>
+        <div class="voice-col voice-dont">
+          <h3>Don’t</h3>
+          <ul>
+            <li><strong>Default Tailwind utilities</strong>Forbidden: <code>p-4</code>, <code>mt-2</code>, <code>text-gray-500</code>, stock color/spacing scales.</li>
+            <li><strong>Invent tokens casually</strong>No one-off CSS vars or arbitrary palette expansions.</li>
+            <li><strong>Restyle components/ui</strong>Don’t fork Button/Input styles in feature code.</li>
+            <li><strong>Skip accessibility</strong>No unlabeled icons, trapped focus without escape, or mouse-only affordances.</li>
+            <li><strong>Copy ACME / Specify demo values</strong>Violet #624de3, Inter, and template measurements are not Prrrfct.</li>
+          </ul>
+        </div>
+      </div>
+      <h3 class="subhead">Accessibility baseline</h3>
+      <div class="trait-grid">
+        <article class="trait"><div class="trait-label">Keyboard</div><h3>Mandatory</h3><p>All interactive elements reachable and operable. Focus order matches visual order.</p></article>
+        <article class="trait"><div class="trait-label">Modals</div><h3>Trap · lock · restore</h3><p>Focus trap, background scroll lock, restore focus on close.</p></article>
+        <article class="trait"><div class="trait-label">Icons</div><h3>Decorative vs labeled</h3><p>Decorative icons: <code>aria-hidden</code>. Meaningful controls need accessible names.</p></article>
+        <article class="trait"><div class="trait-label">Live regions</div><h3>aria-live sparingly</h3><p>Only when necessary for status updates users can’t otherwise perceive.</p></article>
+      </div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>08 / Rules</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet" id="implementation">
+    <div class="sheet-inner">
+      <div class="section-kicker"><span class="section-num">09 — Implementation notes</span><span class="section-rule"></span></div>
+      <h2 class="t-h2 section-title">Where to edit — and what stays locked.</h2>
+      <p class="t-body-lg section-lede">Shared foundation must remain consistent across branches. Change it deliberately, then merge intentionally.</p>
+      <div class="impl-grid">
+        <div class="impl-card">
+          <span class="badge badge-locked">Locked</span>
+          <h4>Read-only by default</h4>
+          <ul>
+            <li><code>globals.css</code></li>
+            <li><code>tailwind.config.ts</code></li>
+            <li><code>components/ui/**</code></li>
+            <li><code>lib/**</code></li>
+            <li><code>postcss.config.mjs</code></li>
+            <li><code>tsconfig.json</code> · <code>next.config.mjs</code></li>
+            <li><code>package.json</code> + lockfile</li>
+            <li><code>PROJECT_CONTEXT.md</code> · <code>.cursorrules</code></li>
+          </ul>
+        </div>
+        <div class="impl-card">
+          <span class="badge badge-controlled">Controlled</span>
+          <h4>Change with care</h4>
+          <ul>
+            <li><code>app/layout.tsx</code></li>
+            <li><code>components/layout/*</code></li>
+            <li><code>EmailSignupForm.tsx</code></li>
+            <li>Providers / auth wiring</li>
+          </ul>
+        </div>
+        <div class="impl-card">
+          <span class="badge badge-flexible">Flexible</span>
+          <h4>Branch-specific OK</h4>
+          <ul>
+            <li>Marketing sections</li>
+            <li><code>app/page.tsx</code> content</li>
+            <li>Feature routes (care, store, onboarding)</li>
+            <li>Copy &amp; visual content</li>
+          </ul>
+        </div>
+      </div>
+      <div class="file-list">
+        <h4>Stack (fixed)</h4>
+        <code>Next.js 14 App Router · TypeScript · Tailwind (custom tokens only)</code>
+        <code>shadcn/ui adapted to Prrrfct · Framer Motion (minimal) · Firebase · Netlify</code>
+      </div>
+      <div class="file-list" style="margin-top:16px">
+        <h4>How to extend safely</h4>
+        <code>1. Read PROJECT_CONTEXT.md and classify the target file</code>
+        <code>2. Inspect existing patterns in components/ui before writing new UI</code>
+        <code>3. Prefer semantic tokens over new primitives</code>
+        <code>4. If a foundation change is required — ask, then update docs</code>
+      </div>
+      <div class="callout" style="margin-top:32px">
+        <strong>Changelog practice.</strong> When tokens or locked components change, note foundations impacted (color, type, spacing, component name) in the PR. This Design System document should be regenerated from code after intentional foundation merges.
+      </div>
+      <footer class="page-foot"><span>Prrrfct Design System</span><span>09 / Implementation</span></footer>
+    </div>
+  </section>
+
+  <section class="sheet back-cover" id="end">
+    <img src="assets/logo-desktop.svg" alt="Prrrfct" />
+    <p>Foundations, tokens, and components — kept calm, coral, and code-true.</p>
+    <div class="back-year">Prrrfct Design System · 2025</div>
+  </section>
+
+</body>
+</html>
